@@ -7,18 +7,24 @@ public class Lab1 {
 
     // Insertion sort.
     public static void main(String[] args) {
-        //int[] a = {1,3,5,4,0};
+        int[] a = {1,3,5,4,0};
         //int[] a = {0, 1, 2, 3, 4, 5};
         //int[] a = {5,5,4,3,2,1,0,7,8,9};
-        int[] a = {2, 1, 3, 4, 8};
+        //int[] a = {2, 1, 3, 4, 8, 6};
+        //int[] one = {1, 2, 3};
+        //int[] two = {4, 5, 6};
 
 
         System.out.println(Arrays.toString(a));
         //insertionSort(a);
         //System.out.println(Arrays.toString(a));
-        quickSort(a);
-        System.out.println(Arrays.toString(a));
+        //quickSort(a);
+        //System.out.println(Arrays.toString(a));
+        System.out.println(Arrays.toString(mergeSort(a)));
+        //System.out.println(Arrays.toString(merge(two, one)));
     }
+
+
 
     public static void insertionSort(int[] array) {
         //boolean sorted = false;
@@ -73,8 +79,6 @@ public class Lab1 {
     // ended up.
     private static int partition(int[] array, int begin, int end) {
         int pivot = array[begin];
-        //int pivot = (low + high) / 2;
-
         while (begin <= end) {
             while (array[begin] < pivot && begin <= end ) {
                 begin++;
@@ -83,14 +87,10 @@ public class Lab1 {
                 end--;
             }
             if (begin <= end) {
-                swap(array, begin, end);
-                begin++;
-                end--;
+                swap(array, begin++, end--);
             }
         }
-          //  swap(array, pivot, array[left]);
-
-        // System.out.println(pivot);
+          //swap(array, pivot, array[left]);
         return begin;
 
     }
@@ -105,17 +105,59 @@ public class Lab1 {
     // Mergesort.
 
     public static int[] mergeSort(int[] array) {
-        throw new UnsupportedOperationException();
+        return (mergeSort(array, 0, array.length-1));
     }
 
     // Mergesort part of an array
     private static int[] mergeSort(int[] array, int begin, int end) {
-        throw new UnsupportedOperationException();
+        int len = array.length;;
+        if (len == 1) return array;
+
+        int mid = (end-begin)/2;
+
+        int[] left = new int[mid+1];
+        int[] right = new int[end-mid];
+        for (int i = 0; i < left.length; i++) {
+            left[i] = array[i];
+        }
+        for (int i = 0; i < right.length ; i++) {
+            right[i] = array[i + mid + 1];
+        }
+
+        left = mergeSort(left);
+        right = mergeSort(right);
+        return merge(left, right);
     }
+
+
 
     // Merge two sorted arrays into one
     private static int[] merge(int[] left, int[] right) {
-        throw new UnsupportedOperationException();
+        int leftLen = left.length;
+        int rightLen = right.length;
+        int i, j, k;
+        i = 0;
+        j = 0;
+        k = 0;
+
+        int[] tmp = new int[leftLen + rightLen];
+        while(leftLen > i && rightLen > j){
+            if (left[i] > right[j]){
+                tmp[k] = right[j++];
+            }
+            else {
+                tmp[k] = left[i++];
+            }
+            k++;
+        }
+        while (i < leftLen) {
+            tmp[k++] = left[i++];
+        }
+
+        while (j < rightLen) {
+            tmp[k++] = right[j++];
+        }
+        return tmp;
     }
 }
 
