@@ -7,20 +7,34 @@ public class Lab1 {
 
     // Insertion sort.
     public static void main(String[] args) {
-        int[] a = {1,3,5,4,0};
+        //int[] a = {1,3,5,4,0};
         //int[] a = {0, 1, 2, 3, 4, 5};
-        //int[] a = {5,5,4,3,2,1,0,7,8,9};
+        int[] a = {5,5,4,3,2,1,0,7,8,9};
         //int[] a = {2, 1, 3, 4, 8, 6};
+        int[] c = {1,0,0};
         //int[] one = {1, 2, 3};
         //int[] two = {4, 5, 6};
+        //int[] a = {1,0};
+       // int[] b = {1, 3, 0};
+        int[] b = {0, 1, 2, 3, 4,5};
 
 
-        System.out.println(Arrays.toString(a));
+        System.out.println("Array a: " + Arrays.toString(a));
+        quickSort(a);
+        System.out.println("Array a: " + Arrays.toString(a));
+
+
+        System.out.println("Array b: " + Arrays.toString(b));
+        quickSort(b);
+        System.out.println("Array b: " + Arrays.toString(b));
+
+        System.out.println("Array b: " + Arrays.toString(c));
+        quickSort(c);
+        System.out.println("Array b: " + Arrays.toString(c));
+
         //insertionSort(a);
         //System.out.println(Arrays.toString(a));
-        //quickSort(a);
-        //System.out.println(Arrays.toString(a));
-        System.out.println(Arrays.toString(mergeSort(a)));
+        //System.out.println("Array a: " + Arrays.toString(mergeSort(a)));
         //System.out.println(Arrays.toString(merge(two, one)));
     }
 
@@ -63,15 +77,10 @@ public class Lab1 {
         if (begin >= end) { //If begin is already greater or equal to end, jump out.
             return;
         }
-/*  blir långsammare, bara test
-        if (end - begin < 10) {
-            insertionSort(array);
-        }
-*/
         int pivot = partition(array, begin, end); //the place where split will happen
 
         quickSort(array, begin, pivot - 1); //recursive call on quicksort left of pivot
-        quickSort(array, pivot, end); // recursive call on quicksort on right side of pivot with pivot included
+        quickSort(array, pivot + 1, end); // recursive call on quicksort on right side of pivot with pivot included
 
     }
 
@@ -79,20 +88,22 @@ public class Lab1 {
     // ended up.
     private static int partition(int[] array, int begin, int end) {
         int pivot = array[begin];
-        while (begin <= end) {
-            while (array[begin] < pivot && begin <= end ) {
-                begin++;
+        int low = begin + 1;
+        int high = end;
+        while (low <= high) {
+            while ( low <= high && array[low] <= pivot ) { // && begin <= end
+                low++;
             }
-            while (array[end] > pivot && begin <= end) {
-                end--;
+            while (low <= high && array[high] >= pivot ) {
+                high--;
             }
-            if (begin <= end) {
-                swap(array, begin++, end--);
+            if (low < high) {
+                swap(array, low++, high--);
             }
         }
-          //swap(array, pivot, array[left]);
-        return begin;
 
+        swap(array, begin, high);
+        return high;
     }
 
     // Swap two elements in an array
@@ -111,7 +122,7 @@ public class Lab1 {
     // Mergesort part of an array
     private static int[] mergeSort(int[] array, int begin, int end) {
         int len = array.length;;
-        if (len == 1) return array;
+        if (len <= 1) return array;
 
         int mid = (end-begin)/2;
 
